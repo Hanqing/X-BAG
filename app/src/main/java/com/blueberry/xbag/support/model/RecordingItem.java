@@ -13,8 +13,7 @@ public class RecordingItem implements Parcelable {
     private int mLength; // length of recording in seconds
     private long mTime; // date/time of the recording
 
-    public RecordingItem()
-    {
+    public RecordingItem() {
     }
 
     public RecordingItem(Parcel in) {

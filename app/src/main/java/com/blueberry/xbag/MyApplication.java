@@ -3,6 +3,7 @@ package com.blueberry.xbag;
 import android.app.Application;
 import android.content.Context;
 
+import com.blueberry.xbag.ui.activity.BaseActivity;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -17,6 +18,8 @@ public class MyApplication extends Application {
 
     private static MyApplication sInstance;
 
+    private static BaseActivity.PAGE_TYPE mPageType = BaseActivity.PAGE_TYPE.DEVICE;
+
     public static MyApplication getsInstance() {
         return sInstance;
     }
@@ -27,6 +30,14 @@ public class MyApplication extends Application {
         MyApplication application = (MyApplication) context.getApplicationContext();
 
         return application.refWatcher;
+    }
+
+    public static BaseActivity.PAGE_TYPE getPageType() {
+        return mPageType;
+    }
+
+    public static void setPageType(BaseActivity.PAGE_TYPE mPageType) {
+        MyApplication.mPageType = mPageType;
     }
 
     @Override

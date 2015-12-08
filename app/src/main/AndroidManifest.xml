@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- wifi网路信息  -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!--获取设备信息-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission        android:name="android.permission.CAMERA" />
@@ -18,10 +19,18 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!-- write sdcard -->
-
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!-- AMap -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MyApplication"
@@ -30,8 +39,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="f64572be2d57db92c48019a2b9ad9fa2" />
+
         <activity
-            android:name=".ui.activity.MainActivity"
+            android:name=".ui.activity.DeviceActivity"
             android:theme="@style/TranslucentStatusTheme"
             android:launchMode="singleTask">
             <intent-filter>
@@ -55,7 +68,24 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
 
+        <activity
+            android:name=".ui.activity.WebViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".ui.activity.MapActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"></activity>
+
         <service android:name=".support.service.RecordingService" />
+        <service android:name=".support.service.ble.BlinkyService"/>
+        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+        <service android:name="com.amap.api.location.APSService" />
 
     </application>
 

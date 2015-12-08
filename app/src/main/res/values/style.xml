@@ -9,9 +9,6 @@
         <!--下划线 提示等一些组件的 着色-->
         <item name="colorAccent">@color/cyan_base_dark</item>
 
-        <!--android底色-->
-        <!--<item name="android:windowBackground">@color/window_background</item>-->
-
         <!--ActionMode出现时 覆盖ActionBar-->
         <item name="windowActionModeOverlay">true</item>
     </style>
@@ -43,6 +40,13 @@
 
     <style name="progressBarColor">
         <item name="colorAccent">@color/cyan_base</item>
+    </style>
+
+    <style name="Widget" />
+
+    <style name="Widget.ScannerSubtitle">
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

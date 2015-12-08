@@ -1,6 +1,5 @@
 package com.blueberry.xbag.ui.activity;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.blueberry.xbag.MyApplication;
 import com.blueberry.xbag.R;
 import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -23,7 +23,7 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import io.values.camera.widget.CameraView;
 import io.values.camera.widget.FocusView;
 
-public class CameraActivity extends Activity implements CameraView.OnCameraSelectListener,
+public class CameraActivity extends BaseActivity implements CameraView.OnCameraSelectListener,
         View.OnClickListener {
 
     private CameraView cameraView;
@@ -59,6 +59,7 @@ public class CameraActivity extends Activity implements CameraView.OnCameraSelec
             e.printStackTrace();
         }
         initViews();
+        initData();
         showDCIM();
     }
 
@@ -204,4 +205,11 @@ public class CameraActivity extends Activity implements CameraView.OnCameraSelec
     public void onChangeCameraPosition(int camera_position) {
 
     }
+
+    public void onOneClick() {
+        if (MyApplication.getPageType() == BaseActivity.PAGE_TYPE.CAMERA) {
+            cameraView.takePicture(false);
+        }
+    }
+
 }

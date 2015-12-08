@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">X-BAG</string>
+
+    <string name="ok">好</string>
+    <string name="yes">是</string>
+    <string name="no">不</string>
+    <string name="cancel">取消</string>
+    <string name="action_default">默认</string>
+
+    <string name="action_settings">设置</string>
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+
+    <!-- 设备 -->
+    <string name="warning">报警</string>
+    <string name="warning_cancel">取消报警</string>
+    <string name="please_connect">请检查设备连接后重试</string>
+
+    <!-- Toasts -->
+    <string name="toast_recording_start">录音开始</string>
+    <string name="toast_recording_finish">录音保存到</string>
+    <string name="toast_file_delete">%1$s 成功删除</string>
+    <string name="toast_file_exists">文件 %1$s 已经存在。 请选择一个不同的文件名。</string>
+
+    <!-- Notifications -->
+    <string name="notification_recording">录音中...</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_title_delete">删除确认...</string>
+    <string name="dialog_text_delete">确定要删除该文件吗?</string>
+    <string name="dialog_title_rename">重命名</string>
+    <string name="dialog_title_options">选项</string>
+
+    <string name="dialog_file_rename">重命名</string>
+    <string name="dialog_file_delete">删除文件</string>
+    <string name="dialog_action_cancel">取消</string>
+    <string name="dialog_action_ok">好</string>
+    <string name="dialog_action_yes">是</string>
+    <string name="dialog_action_no">不</string>
+
+    <string name="no_saved_recordings_message">未保存录音</string>
+    <string name="pause_recording_button">暂停</string>
+    <string name="resume_recording_button">重试</string>
+    <string name="default_file_name">录音</string>
+    <string name="record_prompt">点击按钮开始录音</string>
+    <string name="record_in_progress">录音中</string>
+
+    <!--From nRF-Beacon -->
+    <string name="no_ble">设备不支持蓝牙4.0!</string>
+    <string name="not_available">n/a</string>
+
+    <string name="scanner_title">选择设备:</string>
+    <string name="scanner_empty">没有可用设备</string>
+    <string name="scanner_action_scan">扫描</string>
+    <string name="scanner_action_cancel">取消</string>
+    <string name="scanner_subtitle__not_bonded">可选设备：</string>
+
+</resources>

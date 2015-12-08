@@ -1,13 +1,11 @@
 package com.blueberry.xbag.ui.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
 import com.blueberry.xbag.R;
 import com.blueberry.xbag.support.adapter.activity.RecordPageAdapter;
@@ -21,7 +19,7 @@ import butterknife.ButterKnife;
  */
 public class RecordActivity extends BaseActivity {
     @Bind(R.id.drawer_layout)
-    public DrawerLayout mDrawerLayout;
+    DrawerLayout mDrawerLayout;
 
     @Bind(R.id.nav_view)
     NavigationView mNavigationView;
@@ -41,11 +39,10 @@ public class RecordActivity extends BaseActivity {
         setContentView(R.layout.activity_record);
         ButterKnife.bind(this);
 
-        setUpDrawerContent(mNavigationView);
-
         //显示toolbar并绑定drawerToggle
         ViewUtils.setToolbar(this, mToolbar, true);
         ViewUtils.setDrawerToggle(this, mDrawerLayout, mToolbar);
+        initData();
 
         if (mTabLayout != null && mViewPager != null) {
             //设置tab模式,可以滚动
@@ -60,27 +57,11 @@ public class RecordActivity extends BaseActivity {
         }
     }
 
-    private void setUpDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        mDrawerLayout.closeDrawers();
+    protected DrawerLayout getDrawerLayout() {
+        return mDrawerLayout;
+    }
 
-                        switch (menuItem.getItemId()) {
-                            case R.id.nav_record:
-                                startActivity(new Intent(RecordActivity.this, CameraActivity.class));
-                                overridePendingTransition(0, 0);
-                                break;
-                            case R.id.nav_home:
-                                startActivity(new Intent(RecordActivity.this, MainActivity.class));
-                                overridePendingTransition(0, 0);
-                                break;
-                        }
-
-                        return true;
-                    }
-                });
+    protected NavigationView getNavigationView() {
+        return mNavigationView;
     }
 }

@@ -1,0 +1,9 @@
+<resources>
+    <item name="ic_menu_device" type="drawable">@android:drawable/ic_menu_manage</item>
+    <item name="ic_menu_photo" type="drawable">@android:drawable/ic_menu_gallery</item>
+    <item name="ic_menu_record" type="drawable">@android:drawable/ic_menu_slideshow</item>
+    <item name="ic_menu_map" type="drawable">@android:drawable/ic_menu_mapmode</item>
+    <item name="ic_menu_weather" type="drawable">@android:drawable/ic_menu_send</item>
+    <item name="ic_menu_setting" type="drawable">@android:drawable/ic_menu_set_as</item>
+    <item name="ic_menu_share" type="drawable">@android:drawable/ic_menu_share</item>
+</resources>
