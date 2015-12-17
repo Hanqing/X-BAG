@@ -29,6 +29,39 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/app_bar"></com.amap.api.maps.MapView>
+
+        <View
+            android:id="@+id/stub"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerHorizontal="true"></View>
+
+        <Button
+            android:id="@+id/lost_history_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_toLeftOf="@id/stub"
+            android:background="@color/white"
+            android:text="@string/lost_history"
+            android:textColor="@color/cyan_base"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/location_list_btn"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@id/stub"
+            android:background="@color/white"
+            android:text="@string/location_list"
+            android:textColor="@color/cyan_base"
+            android:textSize="20sp" />
+
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

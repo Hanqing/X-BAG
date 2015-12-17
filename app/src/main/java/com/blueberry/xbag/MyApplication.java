@@ -18,6 +18,8 @@ public class MyApplication extends Application {
 
     private static MyApplication sInstance;
 
+    public static volatile Context applicationContext;
+
     private static BaseActivity.PAGE_TYPE mPageType = BaseActivity.PAGE_TYPE.DEVICE;
 
     public static MyApplication getsInstance() {
@@ -45,7 +47,7 @@ public class MyApplication extends Application {
         super.onCreate();
         //由android系统帮你实例化的
         sInstance = this;
-
+        applicationContext = getApplicationContext();
         refWatcher = LeakCanary.install(sInstance);
 
         ButterKnife.setDebug(BuildConfig.DEBUG);

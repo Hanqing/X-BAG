@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,16 +16,22 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blueberry.xbag.MyApplication;
 import com.blueberry.xbag.R;
 import com.blueberry.xbag.support.scanner.ScannerFragment;
 import com.blueberry.xbag.support.scanner.ScannerFragmentListener;
+import com.blueberry.xbag.support.service.RecordingService;
 import com.blueberry.xbag.support.service.ble.BlinkyService;
 import com.blueberry.xbag.support.utils.ViewUtils;
+import com.umeng.update.UmengUpdateAgent;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +45,8 @@ public class DeviceActivity extends BaseActivity implements ScannerFragmentListe
 
     private static final int REQUEST_ENABLE_BT = 1;
 
+    private boolean mStartRecording = true;
+
     private BlinkyService.BlinkyBinder mBlinkyDevice;
     private Intent mIntentBlinky;
 
@@ -49,6 +58,9 @@ public class DeviceActivity extends BaseActivity implements ScannerFragmentListe
 
     @Bind(R.id.content_frame)
     RelativeLayout mContentLayout;
+
+    @Bind(R.id.signal_layout)
+    RelativeLayout mSignalLayout;
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -99,7 +111,10 @@ public class DeviceActivity extends BaseActivity implements ScannerFragmentListe
         //显示toolbar并绑定drawerToggle
         ViewUtils.setToolbar(this, mToolbar, true);
         ViewUtils.setDrawerToggle(this, mDrawerLayout, mToolbar);
+
         initData();
+
+        UmengUpdateAgent.update(this);
 
         mSearchFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +132,6 @@ public class DeviceActivity extends BaseActivity implements ScannerFragmentListe
                 }
             }
         });
-
     }
 
     private void showError(final String error) {
@@ -167,25 +181,65 @@ public class DeviceActivity extends BaseActivity implements ScannerFragmentListe
         showDisconnected();
     }
 
-    protected DrawerLayout getDrawerLayout()
-    {
+    protected DrawerLayout getDrawerLayout() {
         return mDrawerLayout;
     }
 
-    protected NavigationView getNavigationView()
-    {
+    protected NavigationView getNavigationView() {
         return mNavigationView;
     }
 
+    public void onDoubleClick() {
+        startRecord(mStartRecording);
+        mStartRecording = !mStartRecording;
+    }
+
+    public void onOneClick() {
+        if (MyApplication.getPageType() != BaseActivity.PAGE_TYPE.CAMERA) {
+            showPhoneWarn();
+        }
+    }
+
+    private void showPhoneWarn() {
+
+    }
+
+    private void startRecord(boolean start) {
+
+        Intent intent = new Intent(this, RecordingService.class);
+        if (start) {
+            //mPauseButton.setVisibility(View.VISIBLE);
+            Toast.makeText(this, R.string.toast_recording_start, Toast.LENGTH_SHORT).show();
+            File folder = new File(Environment.getExternalStorageDirectory() + "/SoundRecorder");
+            if (!folder.exists()) {
+                //folder /SoundRecorder doesn't exist, create the folder
+                folder.mkdir();
+            }
+
+            //start RecordingService
+            startService(intent);
+            //keep screen on while recording
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        } else {
+            stopService(intent);
+            //allow the screen to turn off again once recording is finished
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
 
     private void showConnected() {
         mContentLayout.setVisibility(View.VISIBLE);
         mEmptyView.setVisibility(View.GONE);
+        mSignalLayout.setVisibility(View.VISIBLE);
+        mSearchFab.setVisibility(View.GONE);
     }
 
     private void showDisconnected() {
         mContentLayout.setVisibility(View.GONE);
         mEmptyView.setVisibility(View.VISIBLE);
+        mSignalLayout.setVisibility(View.GONE);
+        mSearchFab.setVisibility(View.VISIBLE);
     }
 
     @Override

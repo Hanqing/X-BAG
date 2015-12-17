@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/java/com/blueberry/xbag/support/scanner" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_rssi_0_bar.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_rssi_1_bar.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_rssi_2_bars.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/ic_rssi_3_bars.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/no_beacons.png" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_rssi_bar.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout-v21" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout-v23" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/device_list_empty.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/device_list_row.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/device_list_title.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_scanner_device_selection.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/values-v21/dimens.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/app/src/main/res/values/strings_permission.xml" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

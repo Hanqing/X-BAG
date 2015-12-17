@@ -62,9 +62,6 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 
 	private static final UUID CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
-	private final static UUID BATTERY_SERVICE = UUID.fromString("0000180F-0000-1000-8000-00805f9b34fb");
-	private final static UUID BATTERY_LEVEL_CHARACTERISTIC = UUID.fromString("00002A19-0000-1000-8000-00805f9b34fb");
-
 	private final static UUID GENERIC_ATTRIBUTE_SERVICE = UUID.fromString("00001801-0000-1000-8000-00805f9b34fb");
 	private final static UUID SERVICE_CHANGED_CHARACTERISTIC = UUID.fromString("00002A05-0000-1000-8000-00805f9b34fb");
 
@@ -133,8 +130,8 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 		mUserDisconnected = false;
 
 		// Register bonding broadcast receiver
-		context.registerReceiver(mBondingBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
-		context.registerReceiver(mPairingRequestBroadcastReceiver, new IntentFilter("android.bluetooth.device.action.PAIRING_REQUEST"/*BluetoothDevice.ACTION_PAIRING_REQUEST*/));
+		// context.registerReceiver(mBondingBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
+		// context.registerReceiver(mPairingRequestBroadcastReceiver, new IntentFilter("android.bluetooth.device.action.PAIRING_REQUEST"/*BluetoothDevice.ACTION_PAIRING_REQUEST*/));
 	}
 
 	/**
@@ -202,12 +199,12 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 	 * Closes and releases resources. May be also used to unregister broadcast listeners.
 	 */
 	public void close() {
-		try {
-			mContext.unregisterReceiver(mBondingBroadcastReceiver);
-			mContext.unregisterReceiver(mPairingRequestBroadcastReceiver);
-		} catch (Exception e) {
-			// the receiver must have been not registered or unregistered before
-		}
+//		try {
+//			mContext.unregisterReceiver(mBondingBroadcastReceiver);
+//			mContext.unregisterReceiver(mPairingRequestBroadcastReceiver);
+//		} catch (Exception e) {
+//			// the receiver must have been not registered or unregistered before
+//		}
 		if (mBluetoothGatt != null) {
 			mBluetoothGatt.close();
 			mBluetoothGatt = null;
@@ -235,32 +232,6 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 			return false;
 
 		return SERVICE_CHANGED_CHARACTERISTIC.equals(descriptor.getCharacteristic().getUuid());
-	}
-
-	/**
-	 * Returns true if the characteristic is the Battery Level characteristic.
-	 *
-	 * @param characteristic the characteristic to be checked
-	 * @return true if the characteristic is the Battery Level characteristic.
-	 */
-	private boolean isBatteryLevelCharacteristic(final BluetoothGattCharacteristic characteristic) {
-		if (characteristic == null)
-			return false;
-
-		return BATTERY_LEVEL_CHARACTERISTIC.equals(characteristic.getUuid());
-	}
-
-	/**
-	 * Returns true if this descriptor is from the Battery Level characteristic.
-	 *
-	 * @param descriptor the descriptor to be checked
-	 * @return true if the descriptor belongs to the Battery Level characteristic
-	 */
-	private boolean isBatteryLevelCCCD(final BluetoothGattDescriptor descriptor) {
-		if (descriptor == null)
-			return false;
-
-		return BATTERY_LEVEL_CHARACTERISTIC.equals(descriptor.getCharacteristic().getUuid());
 	}
 
 	/**
@@ -306,12 +277,12 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 		if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) == 0)
 			return false;
 
-		Log.i("xixi", "setCharacteristicNotification");
 		gatt.setCharacteristicNotification(characteristic, true);
 		final BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID);
 		if (descriptor != null) {
 			descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-			return gatt.writeDescriptor(descriptor);
+			boolean state = gatt.writeDescriptor(descriptor);
+			return state;
 		}
 		return false;
 	}
@@ -376,71 +347,6 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 			return false;
 
 		return gatt.writeCharacteristic(characteristic);
-	}
-
-	/**
-	 * Reads the battery level from the device.
-	 *
-	 * @return true if request has been sent
-	 */
-	public final boolean readBatteryLevel() {
-		final BluetoothGatt gatt = mBluetoothGatt;
-		if (gatt == null)
-			return false;
-
-		final BluetoothGattService batteryService = gatt.getService(BATTERY_SERVICE);
-		if (batteryService == null)
-			return false;
-
-		final BluetoothGattCharacteristic batteryLevelCharacteristic = batteryService.getCharacteristic(BATTERY_LEVEL_CHARACTERISTIC);
-		if (batteryLevelCharacteristic == null)
-			return false;
-
-		// Check characteristic property
-		final int properties = batteryLevelCharacteristic.getProperties();
-		if ((properties & BluetoothGattCharacteristic.PROPERTY_READ) == 0) {
-			return setBatteryNotifications(true);
-		}
-
-		return readCharacteristic(batteryLevelCharacteristic);
-	}
-
-	/**
-	 * This method tries to enable notifications on the Battery Level characteristic.
-	 *
-	 * @param enable <code>true</code> to enable battery notifications, false to disable
-	 * @return true if request has been sent
-	 */
-	public boolean setBatteryNotifications(final boolean enable) {
-		final BluetoothGatt gatt = mBluetoothGatt;
-		if (gatt == null) {
-			return false;
-		}
-
-		final BluetoothGattService batteryService = gatt.getService(BATTERY_SERVICE);
-		if (batteryService == null)
-			return false;
-
-		final BluetoothGattCharacteristic batteryLevelCharacteristic = batteryService.getCharacteristic(BATTERY_LEVEL_CHARACTERISTIC);
-		if (batteryLevelCharacteristic == null)
-			return false;
-
-		// Check characteristic property
-		final int properties = batteryLevelCharacteristic.getProperties();
-		if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) == 0)
-			return false;
-
-		gatt.setCharacteristicNotification(batteryLevelCharacteristic, enable);
-		final BluetoothGattDescriptor descriptor = batteryLevelCharacteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID);
-		if (descriptor != null) {
-			if (enable) {
-				descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-			} else {
-				descriptor.setValue(BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
-			}
-			return gatt.writeDescriptor(descriptor);
-		}
-		return false;
 	}
 
 	protected static final class Request {
@@ -598,9 +504,9 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 					@Override
 					public void run() {
 						// Some proximity tags (e.g. nRF PROXIMITY) initialize bonding automatically when connected.
-						if (gatt.getDevice().getBondState() != BluetoothDevice.BOND_BONDING) {
+						// if (gatt.getDevice().getBondState() != BluetoothDevice.BOND_BONDING) {
 							gatt.discoverServices();
-						}
+						// }
 					}
 				}, 600);
 			} else {
@@ -630,20 +536,16 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 					final boolean optionalServicesFound = isOptionalServiceSupported(gatt);
 					// Notify the parent activity
 					mCallbacks.onServicesDiscovered(optionalServicesFound);
-
 					// Obtain the queue of initialization requests
 					mInitInProgress = true;
 					mInitQueue = initGatt(gatt);
 
+					nextRequest();
 					// When the device is bonded and has Service Changed characteristic, the indications must be enabled first.
 					// In case this method returns true we have to continue in the onDescriptorWrite callback
-					if (ensureServiceChangedEnabled(gatt))
-						return;
+//					if (ensureServiceChangedEnabled(gatt))
+//						return;
 
-					// We have discovered services, let's start by reading the battery level value. If the characteristic is not readable, try to enable notifications.
-					// If there is no Battery service, proceed with the initialization queue.
-					if (!readBatteryLevel())
-						nextRequest();
 				} else {
 					mCallbacks.onDeviceNotSupported();
 					disconnect();
@@ -656,19 +558,9 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 		@Override
 		public final void onCharacteristicRead(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic, final int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
-				if (isBatteryLevelCharacteristic(characteristic)) {
-					final int batteryValue = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-					mCallbacks.onBatteryValueReceived(batteryValue);
-
-					// The Battery Level value has been read. Let's try to enable Battery Level notifications.
-					// If the Battery Level characteristic does not have the NOTIFY property, proceed with the initialization queue.
-					if (!setBatteryNotifications(true))
-						nextRequest();
-				} else {
 					// The value has been read. Notify the manager and proceed with the initialization queue.
 					onCharacteristicRead(gatt, characteristic);
 					nextRequest();
-				}
 			} else if (status == BluetoothGatt.GATT_INSUFFICIENT_AUTHENTICATION) {
 				if (gatt.getDevice().getBondState() != BluetoothDevice.BOND_NONE) {
 					mCallbacks.onError(ERROR_AUTH_ERROR_WHILE_BONDED, status);
@@ -696,17 +588,7 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 		@Override
 		public final void onDescriptorWrite(final BluetoothGatt gatt, final BluetoothGattDescriptor descriptor, final int status) {
 			if (status == BluetoothGatt.GATT_SUCCESS) {
-				if (isServiceChangedCCCD(descriptor)) {
-					if (!readBatteryLevel())
-						nextRequest();
-				} else if (isBatteryLevelCCCD(descriptor)) {
-					final byte[] value = descriptor.getValue();
-					if (value != null && value.length > 0 && value[0] == 0x01) {
-						nextRequest();
-					}
-				} else {
 					nextRequest();
-				}
 			} else if (status == BluetoothGatt.GATT_INSUFFICIENT_AUTHENTICATION) {
 				if (gatt.getDevice().getBondState() != BluetoothDevice.BOND_NONE) {
 					mCallbacks.onError(ERROR_AUTH_ERROR_WHILE_BONDED, status);
@@ -718,12 +600,6 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 
 		@Override
 		public final void onCharacteristicChanged(final BluetoothGatt gatt, final BluetoothGattCharacteristic characteristic) {
-			Log.i("xixi", "UUUUUUUUUUUUUUu");
-			if (isBatteryLevelCharacteristic(characteristic)) {
-				final int batteryValue = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
-				mCallbacks.onBatteryValueReceived(batteryValue);
-			} else {
-				Log.i("xixi", "JJJJJJJJJJJJJJ");
 				final BluetoothGattDescriptor cccd = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_DESCRIPTOR_UUID);
 				final boolean notifications = cccd == null || cccd.getValue() == null || cccd.getValue().length != 2 || cccd.getValue()[0] == 0x01;
 
@@ -732,7 +608,6 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 				} else { // indications
 					onCharacteristicIndicated(gatt, characteristic);
 				}
-			}
 		}
 
 		/**
@@ -752,7 +627,6 @@ public abstract class BleManager<E extends BleManagerCallbacks> {
 				}
 				return;
 			}
-
 			switch (request.type) {
 				case READ: {
 					readCharacteristic(request.characteristic);

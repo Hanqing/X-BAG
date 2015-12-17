@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -50,6 +52,12 @@ public class MapActivity extends BaseActivity implements LocationSource, AMapLoc
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    @Bind(R.id.lost_history_btn)
+    Button lostHistoryBtn;
+
+    @Bind(R.id.location_list_btn)
+    Button locationListBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +72,20 @@ public class MapActivity extends BaseActivity implements LocationSource, AMapLoc
 
         initData();
         initMap();
+
+        lostHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        locationListBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     protected DrawerLayout getDrawerLayout() {

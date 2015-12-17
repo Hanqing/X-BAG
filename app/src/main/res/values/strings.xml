@@ -27,6 +27,15 @@
     <!-- Notifications -->
     <string name="notification_recording">Recording...</string>
 
+    <!-- Setting -->
+    <string name="preference_donnot_disturb">preference_donnot_disturb</string>
+    <string name="preference_choose_sound">preference_choose_sound</string>
+    <string name="preference_double_click">preference_double_click</string>
+    <string name="preference_record_history">preference_record_history</string>
+    <string name="preference_version">preference_version</string>
+    <string name="setting_title">Setting</string>
+    <string name="SoundDefault">Default</string>
+
     <!-- Dialogs -->
     <string name="dialog_title_delete">Confirm Delete...</string>
     <string name="dialog_text_delete">Are you sure you would like to delete this file?</string>

@@ -16,6 +16,10 @@
     <string name="warning_cancel">取消报警</string>
     <string name="please_connect">请检查设备连接后重试</string>
 
+    <!-- 地图 -->
+    <string name="lost_history">遗失历史</string>
+    <string name="location_list">定位列表</string>
+
     <!-- Toasts -->
     <string name="toast_recording_start">录音开始</string>
     <string name="toast_recording_finish">录音保存到</string>

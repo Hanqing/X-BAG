@@ -3,6 +3,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e8f0ee"
     android:fitsSystemWindows="true">
 
     <RelativeLayout
@@ -75,6 +76,48 @@
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/signal_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/content_frame"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_signal"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:src="@drawable/signal" />
+
+            <TextView
+                android:id="@+id/tv_signal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_toRightOf="@id/iv_signal"
+                android:text="信号强度:"
+                android:textColor="@color/gray"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/signal_state"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="@color/cyan_base"
+                android:padding="3dp"
+                android:text="极好"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/empty"
             android:layout_width="wrap_content"
@@ -82,12 +125,12 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center"
             android:drawablePadding="30dp"
-            android:textColor="@color/cyan_base"
-            android:maxWidth="250dp"
-            android:textSize="16sp"
-            android:gravity="center_horizontal"
             android:drawableTop="@drawable/no_beacons"
-            android:text="确保蓝牙及硬件处于打开状态且硬件与手机处于15m内" />
+            android:gravity="center_horizontal"
+            android:maxWidth="250dp"
+            android:text="确保蓝牙及硬件处于打开状态且硬件与手机处于15m内"
+            android:textColor="@color/cyan_base"
+            android:textSize="16sp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_search"

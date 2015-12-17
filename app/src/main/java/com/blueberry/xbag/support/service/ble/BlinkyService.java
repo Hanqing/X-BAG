@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.blueberry.xbag.support.profile.BleManager;
 import com.blueberry.xbag.support.profile.BleProfileService;
@@ -37,8 +36,7 @@ public class BlinkyService extends BleProfileService implements BlinkyManagerCal
 
     public static final String BROADCAST_RING_STATE_CHANGED = "com.blueberry.xbag.BROADCAST_RING_STATE_CHANGED";
     public static final String EXTRA_DATA = "com.blueberry.xbag.EXTRA_DATA";
-    public static final String BROADCAST_ONE_CLICK = "com.blueberry.xbag.BROADCAST_ONE_CLICK";
-    public static final String BROADCAST_DOUBLE_CLICK = "com.blueberry.xbag.BROADCAST_DOUBLE_CLICK";
+    public static final String BROADCAST_CLICK = "com.blueberry.xbag.BROADCAST_CLICK";
 
     private BlinkyManager mManager;
 
@@ -76,28 +74,10 @@ public class BlinkyService extends BleProfileService implements BlinkyManagerCal
             return;
         }
 
-        Log.i("xixi", "HHHHHHHHHHHHH");
-        pendingCount++;
-        if (pendingCount <= 1) {
-            Looper.prepare();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    if (pendingCount > 1) {
-                        Log.i("xixi", "双击");
-                        final Intent broadcast = new Intent(BROADCAST_DOUBLE_CLICK);
-                        broadcast.putExtra(EXTRA_DATA, state);
-                        LocalBroadcastManager.getInstance(BlinkyService.this).sendBroadcast(broadcast);
-                    } else {
-                        Log.i("xixi", "单击");
-                        final Intent broadcast = new Intent(BROADCAST_ONE_CLICK);
-                        broadcast.putExtra(EXTRA_DATA, state);
-                        LocalBroadcastManager.getInstance(BlinkyService.this).sendBroadcast(broadcast);
-                    }
-                    pendingCount = 0;
-                }
-            }, 500);
-            Looper.loop();
-        }
+        final Intent broadcast = new Intent(BROADCAST_CLICK);
+        broadcast.putExtra(EXTRA_DATA, state);
+        LocalBroadcastManager.getInstance(BlinkyService.this).sendBroadcast(broadcast);
+
     }
 
     @Override

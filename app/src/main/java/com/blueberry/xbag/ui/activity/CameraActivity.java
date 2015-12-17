@@ -1,9 +1,11 @@
 package com.blueberry.xbag.ui.activity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -71,6 +73,13 @@ public class CameraActivity extends BaseActivity implements CameraView.OnCameraS
         ibTakePicture = $(R.id.ib_camera_take_picture);
         ibCameraPhotos = $(R.id.ib_camera_photos);
         imgGrid = $(R.id.img_grid);
+
+        ibCameraPhotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CameraActivity.this, PictureActivity.class));
+            }
+        });
     }
 
     private <T extends View> T $(int resId) {
@@ -180,7 +189,7 @@ public class CameraActivity extends BaseActivity implements CameraView.OnCameraS
             @Override
             public void run() {
                 if (success) {
-                    Toast.makeText(CameraActivity.this, "seccess!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CameraActivity.this, "拍照成功!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

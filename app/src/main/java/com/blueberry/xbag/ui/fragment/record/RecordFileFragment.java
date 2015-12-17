@@ -83,8 +83,6 @@ public class RecordFileFragment extends Fragment {
                     }
                 }
             };
-
-    protected void lazyLoad(){};
 }
 
 

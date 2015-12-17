@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout="@layout/preference_item_vertical">
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="通知">
+        <com.blueberry.xbag.support.widget.SwitchCompatPreference
+            android:key="@string/preference_donnot_disturb"
+            android:defaultValue="false"
+            android:widgetLayout="@layout/preference_item_switch"
+            android:title="免打扰" />
+        <Preference
+            android:key="@string/preference_choose_sound"
+            android:layout="@layout/preference_item_horizontal"
+            android:title="告警铃音" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="通用">
+        <com.blueberry.xbag.support.widget.RadioGroupPreference
+            android:key="@string/preference_double_click"
+            android:layout="@layout/preference_item_horizontal"
+            android:title="设备双击" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="录音">
+        <Preference
+            android:key="@string/preference_record_history"
+            android:layout="@layout/preference_item_horizontal"
+            android:title="录音历史" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/preference_category_widget"
+        android:title="版本">
+        <Preference
+            android:key="@string/preference_version"
+            android:layout="@layout/preference_item_horizontal"
+            android:title="X-BAG 版本"
+            android:enabled="false"/>
+    </PreferenceCategory>
+</PreferenceScreen>

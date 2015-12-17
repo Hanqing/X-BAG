@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!--获取设备信息-->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission        android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -23,9 +23,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- bluetooth -->
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- AMap -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -43,10 +43,18 @@
             android:name="com.amap.api.v2.apikey"
             android:value="f64572be2d57db92c48019a2b9ad9fa2" />
 
+        <!-- 自动更新 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="567112cc67e58e18c00039f3" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
+
         <activity
             android:name=".ui.activity.DeviceActivity"
-            android:theme="@style/TranslucentStatusTheme"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:theme="@style/TranslucentStatusTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -82,8 +90,19 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"></activity>
 
+        <activity android:name=".ui.activity.PictureActivity"></activity>
+        <activity android:name=".ui.activity.SettingActivity"></activity>
+        <activity android:name=".ui.activity.RecordFileActivity"></activity>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService"></service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
         <service android:name=".support.service.RecordingService" />
-        <service android:name=".support.service.ble.BlinkyService"/>
+        <service android:name=".support.service.ble.BlinkyService" />
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 

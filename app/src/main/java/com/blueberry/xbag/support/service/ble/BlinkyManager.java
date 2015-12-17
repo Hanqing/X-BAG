@@ -52,12 +52,8 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
      * X-BAG notify characteristic UUID
      */
     private final static UUID BAG_SUB_NOTIFY_CHARACTERISTIC = UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");
-    /**
-     * X-BAG write characteristic UUID
-     */
-    private final static UUID BAG_SUB_WRITE_CHARACTERISTIC = UUID.fromString("0000ffe2-0000-1000-8000-00805f9b34fb");
 
-    private BluetoothGattCharacteristic mAlertCharacteristic, mNotifyCharacteristic, mWriteCharacteristic;
+    private BluetoothGattCharacteristic mAlertCharacteristic, mNotifyCharacteristic;
 
     public BlinkyManager(final Context context) {
         super(context);
@@ -85,7 +81,6 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
             final BluetoothGattService bagService = gatt.getService(BAG_UUID_SERVICE);
             if (bagService != null) {
                 mNotifyCharacteristic = bagService.getCharacteristic(BAG_SUB_NOTIFY_CHARACTERISTIC);
-                mWriteCharacteristic = bagService.getCharacteristic(BAG_SUB_WRITE_CHARACTERISTIC);
             }
 
             final BluetoothGattService alertService = gatt.getService(ALERT_SERVICE);
@@ -93,19 +88,12 @@ public class BlinkyManager extends BleManager<BlinkyManagerCallbacks> {
                 mAlertCharacteristic = alertService.getCharacteristic(ALERT_LEVEL_CHARACTERISTIC);
             }
 
-            boolean writeRequest = false;
-            if (mWriteCharacteristic != null) {
-                final int rxProperties = mWriteCharacteristic.getProperties();
-                writeRequest = (rxProperties & BluetoothGattCharacteristic.PROPERTY_WRITE) > 0;
-            }
-
-            return mWriteCharacteristic != null && mNotifyCharacteristic != null && mAlertCharacteristic != null && writeRequest;
+            return mNotifyCharacteristic != null && mAlertCharacteristic != null;
         }
 
         @Override
         protected void onDeviceDisconnected() {
             mNotifyCharacteristic = null;
-            mWriteCharacteristic = null;
             mAlertCharacteristic = null;
         }
 

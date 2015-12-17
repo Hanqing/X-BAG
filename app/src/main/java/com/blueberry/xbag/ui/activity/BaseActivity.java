@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
@@ -33,7 +34,7 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
     protected NavigationView mNavigationView;
 
     public enum PAGE_TYPE {
-        DEVICE, CAMERA, RECORD, MAP, WEATHER
+        DEVICE, CAMERA, RECORD, MAP, WEATHER, SETTING
     }
 
     @Override
@@ -84,8 +85,7 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BlinkyService.BROADCAST_RING_STATE_CHANGED);
         intentFilter.addAction(BlinkyService.BROADCAST_CONNECTION_STATE);
-        intentFilter.addAction(BlinkyService.BROADCAST_ONE_CLICK);
-        intentFilter.addAction(BlinkyService.BROADCAST_DOUBLE_CLICK);
+        intentFilter.addAction(BlinkyService.BROADCAST_CLICK);
         return intentFilter;
     }
 
@@ -103,11 +103,6 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
                                 startActivity(new Intent(BaseActivity.this, DeviceActivity.class));
                                 overridePendingTransition(0, 0);
                                 break;
-                            case R.id.nav_record:
-                                MyApplication.setPageType(PAGE_TYPE.RECORD);
-                                startActivity(new Intent(BaseActivity.this, RecordActivity.class));
-                                overridePendingTransition(0, 0);
-                                break;
                             case R.id.nav_photo:
                                 MyApplication.setPageType(PAGE_TYPE.CAMERA);
                                 startActivity(new Intent(BaseActivity.this, CameraActivity.class));
@@ -123,6 +118,11 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
                                 startActivity(new Intent(BaseActivity.this, WebViewActivity.class));
                                 overridePendingTransition(0, 0);
                                 break;
+                            case R.id.nav_setting:
+                                MyApplication.setPageType(PAGE_TYPE.SETTING);
+                                startActivity(new Intent(BaseActivity.this, SettingActivity.class));
+                                overridePendingTransition(0, 0);
+                                break;
                         }
 
                         return true;
@@ -131,6 +131,9 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
     }
 
     class BlinkyUpdateReceiver extends BroadcastReceiver {
+
+        private int pendingCount;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -151,10 +154,21 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
                         onDisconnect();
                         break;
                 }
-            } else if (BlinkyService.BROADCAST_ONE_CLICK.equals(action)) {
+            } else if (BlinkyService.BROADCAST_CLICK.equals(action)) {
+                pendingCount++;
+                if (pendingCount <= 1) {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            if (pendingCount > 1) {
+                                onDoubleClick();
+                            } else {
+                                onOneClick();
+                            }
+                            pendingCount = 0;
+                        }
+                    }, 500);
+                }
                 onOneClick();
-            } else if (BlinkyService.BROADCAST_DOUBLE_CLICK.equals(action)) {
-                onDoubleClick();
             }
         }
 
@@ -177,5 +191,4 @@ public class BaseActivity extends AppCompatActivity implements BlinkyUpdateCallb
 
     public void onDoubleClick() {
     }
-
 }
